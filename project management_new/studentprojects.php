@@ -1,0 +1,349 @@
+<?php session_start();
+include('connect/db.php');
+$S_EMAIL=$_SESSION['S_EMAIL'];
+$S_PASSWORD=$_SESSION['S_PASSWORD'];
+$sql="select * from student where S_EMAIL='$S_EMAIL'";
+$result=mysqli_query($conn,$sql);
+while($row=mysqli_fetch_array($result)){
+ $row['S_P_ID'];
+ $row['S_F_NAME'];
+    $row['ROLL_NO'];
+ $_SESSION['S_P_ID'] = $row['S_P_ID'];
+$_SESSION['S_F_NAME'] = $row['S_F_NAME'];
+$_SESSION['ROLL_NO'] = $row['ROLL_NO'];
+}
+
+$sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+
+$result1=mysqli_query($conn,$sql1);
+if (mysqli_num_rows($result1)>0) {
+    $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+    
+    $result2=mysqli_query($conn,$sql2);
+    if(mysqli_num_rows($result2)>0){  
+?>
+<html>
+<head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Project Management System</title>
+<link href="http://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css' />
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1><a href="#">Project Management System</a></h1>
+				<p>Come and get projects</p>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="menu-wrapper">
+		<div id="menu">
+			<ul>
+				<li class="current_page_item"><a href="studenthome.php">Home</a></li>
+			</ul>     
+	</div>
+	</div>
+	<!-- end #menu -->
+	<div id="page">
+	    <div id="page-bgtop">
+	        <div id="page-bgbtm">
+	            <div id="page-content">
+	                <div id="content">
+	                    <div class="post">
+	                        <h2 class="title">Welcome to the portal<b> <?php  echo $_SESSION['S_F_NAME']?></b></h2>
+	                    </div>
+
+	                    <div class="post">
+	                        <div class="entry">
+	                            <h2> DETAIL OF THE PROJECTS</h2>
+                                <form>
+	                            <table width="100%" cellpadding="0.5px" style="margin-top: 30px" border="1" color="black">
+	                                <tr>
+
+	                                    <th style="font-size: 20px"><b>Project id</b></th>
+	                                    <th style="font-size: 20px"><b>Project Name</b></th>
+	                                    <th style="font-size: 20px"><b>Project instructor</b></th>
+
+	                                </tr>
+	                                <?php
+                                    
+		while ($row=mysqli_fetch_array($result2)) {
+			?>
+	                                <tr>
+
+	                                    <td><?php echo $row['PRJ_ID'];?></td>
+	                                    <td><?php echo $row['PRJ_NAME'];?></td>
+	                                    <td><?php echo $row['I_F_NAME'];?><?php echo " "; echo $row['I_L_NAME'];?></td>
+	                                    
+	                                </tr>
+	                                <?php 
+		}}
+                else
+               {
+                  echo '<script type="text/javascript">alert("Error..!! No data found ");   window.location="studenthome.php";</script>';
+               }
+           
+		
+		?>
+                                </table>
+                                </form>   
+	                    </div></div>
+	                    <div style="clear: both;">&nbsp;</div>
+	                </div>
+	                <!-- end #content -->
+                   
+                    <div id="sidebar">
+						<ul>
+							<li>
+							<center>
+								<h3><b>Enter your choice in serial order</b></h3>
+								    <form method="post" action="studentprojectrequest.php">
+								        <table border="0">
+                                      <tr>
+                                          <td><input type="text" name="ROLL_NO" value="<?php  echo $_SESSION['ROLL_NO']?>"required="required" readonly/></td>
+                                      </tr>
+                                      <tr>
+                                          <td><input type="text" name="S_P_ID" value="<?php  echo $_SESSION['S_P_ID']?>"required="required" readonly/></td>
+                                      </tr>
+								            <tr>
+								                <td>
+								                        <select name="PRJ_ID_1" required>
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr> 
+								            <tr>
+								                <td>
+								                        <select name="PRJ_ID_2" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_3" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_4" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_5" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_6" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_7" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_8" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_9" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                            
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								             <tr>
+								                <td>
+								                        <select name="PRJ_ID_10" >
+								                            <option value="" disabled selected>--Select Project--</option>
+
+                                                        <?php
+                                                         $sql1="select * from offers_project where O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                        $result1=mysqli_query($conn,$sql1);
+                                                        if (mysqli_num_rows($result1)>0) {
+                                                        $sql2="select project.PRJ_ID,project.PRJ_NAME, instructor.I_F_NAME, instructor.I_L_NAME from project ,offers_project, instructor where project.PRJ_ID = offers_project.O_PRJ_ID AND project.PRJ_I_ID=instructor.I_ID AND offers_project.O_P_ID='".$_SESSION['S_P_ID']."'";
+                                                         $result2=mysqli_query($conn,$sql2);
+                                                            while($row = mysqli_fetch_array($result2)){
+                                                             ?>
+                                                             <option value="<?php echo($row['PRJ_ID']);?>"><?php echo($row['PRJ_ID']);?></option>
+                                                            <?php 
+                                                            } }
+                                                         ?>
+								                        </select>
+								                    </td>
+								            </tr>
+								            <tr>
+								                <td>
+								                    <center>
+								                        <button type="submit" name="submit" style="border-radius: 150px 50px 150px 50px;">Submit</button>
+								                    </center>
+								                </td>
+								            </tr>
+								        </table>
+								    </form>
+								</center>
+							</li>
+						</ul>
+					</div>
+	                <!-- end #sidebar -->
+	            
+	            <div style="clear: both;">&nbsp;</div>
+	      
+	        </div>
+	           
+	    </div>
+	       
+	</div>
+	<!-- end #page -->
+	</div>
+    </div>
+	<div id="footer">
+	    <p>Untitled. All rights reserved. Design by Binoy and Jay</p>
+	</div>
+	<!-- end #footer -->
+	</body>
+	</html>
+	<?php
+    }
+    ?>
